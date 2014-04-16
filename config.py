@@ -4,7 +4,7 @@
 # If False the server is only accessible from your own computer.
 PUBLIC = False
 
-# The port the webserver will run in.
+# The port the webserver will run on.
 PORT = 5000
 
 # The directly where the QuakeML files are located. The script will search
