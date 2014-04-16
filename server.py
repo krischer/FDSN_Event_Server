@@ -5,7 +5,6 @@ import flask
 from flask.ext.cache import Cache
 
 import inspect
-from io import BytesIO
 import obspy
 import os
 
@@ -79,16 +78,19 @@ def query():
         arguments["starttime"] = obspy.UTCDateTime(arguments["starttime"])
     if "endtime" in arguments:
         arguments["endtime"] = obspy.UTCDateTime(arguments["endtime"])
-
-    arguments["query_id"] = flask.request.url
+    arguments["query_id"] = flask.request.base_url
 
     cat = event_shelve.query(**arguments)
 
-    output = BytesIO()
-    cat.write(output, format="quakeml", validate=True)
-    output.seek(0, 0)
-    output = output.read()
-    return output
+    if cat is None:
+        return ("Request was properly formatted and submitted but no data "
+                "matches the selection", 204, {})
+
+    return cat
+
 
 if __name__ == "__main__":
-    app.run()
+    if config.PUBLIC is True:
+        app.run(host="0.0.0.0", port=config.PORT)
+    else:
+        app.run(port=config.PORT)

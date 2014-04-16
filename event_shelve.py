@@ -4,7 +4,6 @@
 from collections import OrderedDict
 import fnmatch
 import obspy
-from obspy.core.event import Catalog
 import os
 import re
 import shelve
@@ -176,11 +175,29 @@ class EventShelve(object):
         else:
             query_id = "smi:" + query_id.replace("http://", "")
 
-        cat = Catalog(resource_id=query_id)
-        for filename in found_events.iterkeys():
-            cat += obspy.readEvents(filename)
+        cat_str = ("<?xml version='1.0' encoding='utf-8'?>\n"
+                   '<ns0:quakeml xmlns:ns0="http://quakeml.org/xmlns/quakeml/'
+                   '1.2" xmlns="http://quakeml.org/xmlns/bed/1.2">\n'
+                   '  <eventParameters publicID="%s">\n'
+                   "    {events}\n"
+                   "  </eventParameters>\n"
+                   "</ns0:quakeml>" % query_id)
 
-        return cat
+        pattern = re.compile(r"<event\s.*<\/event>", re.DOTALL)
+        event_strings = []
+        for filename in found_events.iterkeys():
+            with open(filename, "rt") as fh:
+                event_str = fh.read()
+                event_str = re.findall(pattern, event_str)[0]
+                if event_str is None:
+                    msg = ("Could not extract event string from event '%'. "
+                           "Will be skipped." % filename)
+                    warnings.warn(EventShelveWarning)
+                    continue
+                event_strings.append(event_str)
+
+        cat_str = cat_str.format(events="\n    ".join(event_strings))
+        return cat_str
 
     def __del__(self):
         self._s.close()
