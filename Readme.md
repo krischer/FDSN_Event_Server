@@ -48,13 +48,13 @@ QUAKEML_ROOT_DIR = "../../data/2014_04_15--VERCE_GCMT_Catalog/quakemls/"
 # .qml".
 QUAKEML_FILES_GLOB = "*.xml"
 
-# The location of the shelve file to store the event information. The event 
-# indices are stored there so they do not have to be created each time the 
+# The location of the shelve file to store the event information. The event
+# indices are stored there so they do not have to be created each time the
 # server starts.
 SHELVE_DB_PATH = "event_db.shelve"
 
 # The regex used on the resource id of the event to extract the event id. If
-# not given or not found, a random one will be used. The first paranthesized
+# not given or not found, a random one will be used. The first parenthesized
 # subgroup will be used, e.g.
 # event_id = re.match(REGEX_FOR_EVENT_ID, resource_id).group(1)
 #
@@ -70,7 +70,7 @@ The final step is to start the server.
 $ python server.py
 ```
 
-Once the server has started use any tool able to deal with the FDSN event webservice to query for some events. Make sure to pass the correct adress and port to the server. This example utilizes ObsPy.
+Once the server has started use any tool able to deal with the FDSN event webservice to query for some events. Make sure to pass the correct address and port to the server. This example utilizes ObsPy.
 
 ```python
 In [1]: import obspy
@@ -101,4 +101,5 @@ This is nothing but a collection of simple scripts so some caveats apply.
 * Essentially untested.
 * Not a complete fdsnws-event implementation. The HTTP codes are oftentimes not correct and other issues are likely.
 * The following query parameters are silently ignored: `latitude`, `longitude`, `minradius`, `maxradius` (these four are used for radial search queries which could be implemented pretty easily if desired - `minlatitude` and consorts work fine), `magnitudetype`, `catalog`, `contributor`, `updatedafter`, and `include*`.
-* The database is only updated upon starting the server. So everytime your data set changes you will need to restart the server (the indexes are persistant so restarting is fairly cheap).
+* The database is only updated upon starting the server. So every time your
+data set changes you will need to restart the server (the indexes are persistent so restarting is fairly cheap).

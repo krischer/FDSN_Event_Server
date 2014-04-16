@@ -18,7 +18,7 @@ QUAKEML_FILES_GLOB = "*.xml"
 SHELVE_DB_PATH = "event_db.shelve"
 
 # The regex used on the resource id of the event to extract the event id. If
-# not given or not found, a random one will be used. The first paranthesized
+# not given or not found, a random one will be used. The first parenthesized
 # subgroup will be used, e.g.
 # event_id = re.match(REGEX_FOR_EVENT_ID, resource_id).group(1)
 #
