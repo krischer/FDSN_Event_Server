@@ -80,7 +80,11 @@ def query():
         arguments["endtime"] = obspy.UTCDateTime(arguments["endtime"])
     arguments["query_id"] = flask.request.base_url
 
-    cat = event_shelve.query(**arguments)
+    try:
+        cat = event_shelve.query(**arguments)
+    except Exception as e:
+        return str(e), 500, {}
+
 
     if cat is None:
         return ("Request was properly formatted and submitted but no data "

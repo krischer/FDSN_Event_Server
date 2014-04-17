@@ -132,9 +132,9 @@ class EventShelve(object):
                     (maxlongitude is None or
                      event["longitude"] <= float(maxlongitude)) and \
                     (mindepth is None or
-                     event["depth"] >= float(mindepth)) and \
+                     event["depth_in_km"] >= float(mindepth)) and \
                     (maxdepth is None or
-                     event["depth"] <= float(maxdepth)) and \
+                     event["depth_in_km"] <= float(maxdepth)) and \
                     (minmagnitude is None or
                      event["magnitude"] >= float(minmagnitude)) and \
                     (maxmagnitude is None or
